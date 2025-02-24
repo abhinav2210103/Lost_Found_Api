@@ -13,10 +13,9 @@ exports.handleUserSignUp = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists!" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ fullName, email, password: hashedPassword });
-
+    const newUser = new User({ fullName, email, password }); 
     await newUser.save();
+
     res.status(201).json({ message: "User registered successfully!" });
   } catch (error) {
     console.error("Sign Up Error:", error);
@@ -28,12 +27,25 @@ exports.handleUserSignUp = async (req, res) => {
 exports.handleUserSignIn = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("Login attempt for:", email);
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials!" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials!" });
+    if (!user) {
+      console.log("User not found!");
+      return res.status(400).json({ message: "Invalid credentials! No user found" });
+    }
+
+    console.log("Stored Hashed Password:", user.password);
+    console.log("Entered Password:", password);
+
+    const isMatch = await user.matchPassword(password);
+    console.log("Password Match:", isMatch);
+
+    if (!isMatch) {
+      console.log("Password does not match!");
+      return res.status(400).json({ message: "Invalid credentials! Wrong password" });
+    }
 
     const token = createTokenForUser(user);
     res.cookie("token", token, { httpOnly: true });
@@ -44,3 +56,5 @@ exports.handleUserSignIn = async (req, res) => {
     res.status(500).json({ error: "Error signing in user" });
   }
 };
+
+
