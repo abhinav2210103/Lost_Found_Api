@@ -1,4 +1,4 @@
-const LostItem = require("../models/LostItem");
+const LostItem = require("../models/LostItems");
 const FoundItem = require("../models/FoundItem");
 
 exports.matchItems = async (req, res) => {
