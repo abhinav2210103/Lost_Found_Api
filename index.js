@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(cookieParser());
 
-app.use("/user", userRouter);
+app.use("/users", userRouter);
 app.use(checkForAuthenticationCookie("token"));
 app.use("/lost-items", lostItemRouter);
 app.use("/found-items", foundItemRouter);
