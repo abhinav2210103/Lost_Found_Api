@@ -17,6 +17,33 @@ exports.reportFoundItem = async (req, res) => {
   }
 };
 
+exports.claimFoundItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized: Please log in to claim an item" });
+    }
+
+    const foundItem = await FoundItem.findById(id);
+    if (!foundItem) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+
+    if (foundItem.claimedBy) {
+      return res.status(400).json({ error: "This item has already been claimed" });
+    }
+
+    foundItem.claimedBy = req.user._id;
+    await foundItem.save();
+
+    res.status(200).json({ message: "Item claimed successfully!", foundItem });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 
 exports.getFoundItems = async (req, res) => {
   try {
