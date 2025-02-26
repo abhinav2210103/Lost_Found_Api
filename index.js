@@ -12,7 +12,7 @@ const matchRouter = require("./routes/matchRoutes");
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-connectMongoDB("mongodb://localhost:27017/lost_found_api").then(() =>
+connectMongoDB(process.env.MONGO_URL).then(() =>
   console.log("MongoDB Connected ✅")
 );
 

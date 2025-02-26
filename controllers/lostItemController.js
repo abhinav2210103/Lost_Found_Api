@@ -1,6 +1,6 @@
 const LostItem = require("../models/LostItems");
 
-exports.reportLostItem = async (req, res) => {
+ async function reportLostItem(req, res) {
   try {
     const { itemName, description , location, dateLost } = req.body;
 
@@ -18,7 +18,7 @@ exports.reportLostItem = async (req, res) => {
 };
 
 
-exports.getLostItems = async (req, res) => {
+  async function getLostItems(req, res) {
   try {
     const lostItems = await LostItem.find();
     res.status(200).json(lostItems);
@@ -28,7 +28,7 @@ exports.getLostItems = async (req, res) => {
 };
 
 
-exports.deleteLostItem = async (req, res) => {
+  async function deleteLostItem(req, res) {  
   try {
     const { id } = req.params;
     const lostItem = await LostItem.findById(id);
@@ -39,7 +39,7 @@ exports.deleteLostItem = async (req, res) => {
   }
 };
 
-exports.getNearbyLostItems = async (req, res) => {
+  async function getNearbyLostItems(req, res) {  
   try {
     const { location } = req.query; 
     if (!location) {
@@ -57,7 +57,7 @@ exports.getNearbyLostItems = async (req, res) => {
 };
 
 
-exports.getUserLostItemsHistory = async (req, res) => {
+  async function getUserLostItemsHistory(req, res) {    
   try {
     const { user_id } = req.query;
     if (!user_id) {
@@ -71,7 +71,7 @@ exports.getUserLostItemsHistory = async (req, res) => {
   }
 };
 
-exports.claimFoundItem = async (req, res) => {
+  async function claimFoundItem(req, res) {    
   try {
     const { id } = req.params;
 
@@ -96,4 +96,6 @@ exports.claimFoundItem = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+module.exports = {claimFoundItem, reportLostItem, getLostItems, deleteLostItem, getNearbyLostItems, getUserLostItemsHistory};
 
