@@ -2,7 +2,8 @@ const User = require("../models/users");
 const bcrypt = require("bcryptjs");
 const { createTokenForUser } = require("../services/authentication");
 
-exports.handleUserSignUp = async (req, res) => {
+  async function handleUserSignUp(req, res) {  
+
   try {
     const { fullName, email, password } = req.body;
 
@@ -24,7 +25,7 @@ exports.handleUserSignUp = async (req, res) => {
 };
 
 
-exports.handleUserSignIn = async (req, res) => {
+  async function handleUserSignIn(req, res) {  
   try {
     const { email, password } = req.body;
     console.log("Login attempt for:", email);
@@ -56,5 +57,7 @@ exports.handleUserSignIn = async (req, res) => {
     res.status(500).json({ error: "Error signing in user" });
   }
 };
+
+module.exports = { handleUserSignUp, handleUserSignIn };
 
 

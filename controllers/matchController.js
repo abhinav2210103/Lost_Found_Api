@@ -3,7 +3,7 @@ const FoundItem = require("../models/FoundItem");
 const User = require("../models/users");
 const { sendEmailNotification } = require("../utils/emailService");
 
-exports.matchItems = async (req, res) => {
+  async function matchItems(req, res) {  
   try {
     const lostItems = await LostItem.find().populate("userId");
     const foundItems = await FoundItem.find();
@@ -40,3 +40,4 @@ exports.matchItems = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+module.exports = { matchItems };
